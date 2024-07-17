@@ -19,18 +19,14 @@ const extension = (joi) => ({
     rules: {
         escapeHTML: {
             validate(value, helpers) {
-                const clean = sanitizeHTML(value, {
-                    allowedTags: [],
-                    allowedAttributes: {},
-            });
-                if (clean !== value) return helpers.error('string.escapeHTML', { value })
+                const clean = simpleSanitizeHTML(value);
+                if (clean !== value) return helpers.error('string.escapeHTML', { value });
                 return clean;
             }
         }
     }
-})
-
-const Joi = BaseJoi.extend(extension)
+});
+const Joi = BaseJoi.extend(extension);
 
 const isLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()) {
